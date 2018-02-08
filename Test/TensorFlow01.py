@@ -33,3 +33,4 @@ sess.run(product)  # 运行常量计算
 sess.close()  # 关闭会话
 tf.matmul(m1, m2)  # 创建一个矩阵乘法op，吧m1、m2传入
 """
+
