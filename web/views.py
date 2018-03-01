@@ -6,6 +6,6 @@ from Daimhim.settings import BASE_DIR as bs
 
 def index(request):
     print(bs)
-    return render(request, 'templates/main.html', {})
+    return render(request, 'main.html', {})
     # return HttpResponse('nihao')
 
