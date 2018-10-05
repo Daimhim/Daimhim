@@ -23,4 +23,5 @@ urlpatterns = [
     path('home/getFile/', views.getFile),
     path('home/testForward/', views.testForward),
     path('home/getJokeList/', views.getJokeList),
+    path('home/upLoadFiles/', views.upLoadFiles),
 ]

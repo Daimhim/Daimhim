@@ -1,5 +1,7 @@
 from wsgiref.util import FileWrapper
-from django.http import HttpResponse
+
+from django import forms
+from django.http import HttpResponse, HttpResponseRedirect
 import json as jsonTool
 import os
 import app.src.test.DownloadFile as df
@@ -7,7 +9,9 @@ import app.models as modelsTool
 from django.forms.models import model_to_dict
 from django.core import serializers as serializersTool
 
+
 # Create your views here.
+
 
 def index(request):
     print(request.path)
@@ -21,6 +25,28 @@ def testPost(request):
         return HttpResponse(jsonTool.dumps(resp), "application/json")
     else:
         return HttpResponse("404")
+
+
+def upLoadFiles(request):
+    print(request.method)
+    if request.method == "POST":
+        # form = UploadFileForm(request.POST, request.FILES)
+        path = 'F:\\PycharmProjects\\Daimhim\\app\\log'  # 创建文件存储路径
+        if not os.path.exists(path):
+            os.makedirs(path)  # 创建存储文件的文件夹
+        # print(form.title)
+        # print(form.is_valid())
+        # if form.is_valid():
+        file = request.FILES['file']
+        destination = open(os.path.join(path, file.name), 'wb+')
+        for chunk in file.chunks():
+            destination.write(chunk)
+        destination.close()
+        return HttpResponse('/success/url/')
+        # else:
+        #     return HttpResponse('Storage failure')
+    else:
+        return HttpResponse("success")
 
 
 def getFile(request):
@@ -48,3 +74,8 @@ def getJokeList(request):
     JokeModerate = modelsTool.JokeModel.objects.all()
     serialize = serializersTool.serialize('json', JokeModerate)
     return HttpResponse(jsonTool.dumps({"error_code": 0, "reason": "Success", 'data': serialize}), "application/json")
+
+
+class UploadFileForm(forms.Form):
+    title = forms.CharField(max_length=50)
+    file = forms.FileField()
