@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 
 from app.src import views
+from app.src import User
 
 urlpatterns = [
     path('home/index/', views.index),
@@ -24,4 +25,6 @@ urlpatterns = [
     path('home/testForward/', views.testForward),
     path('home/getJokeList/', views.getJokeList),
     path('home/upLoadFiles/', views.upLoadFiles),
+    path('user/userLogin', User.userLogin),
+    path('user/userRegistered', User.userRegistered),
 ]

@@ -2,7 +2,7 @@ from urllib import request
 from urllib import parse
 import time
 import json
-import app.models as jm
+import app.src.model.models as jm
 
 appkey = "6a7f40ff902220aead73f5f746d423f1"
 frequency = 100

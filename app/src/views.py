@@ -1,14 +1,12 @@
 from wsgiref.util import FileWrapper
 
 from django import forms
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse
 import json as jsonTool
 import os
 import app.src.test.DownloadFile as df
-import app.models as modelsTool
-from django.forms.models import model_to_dict
+import app.src.model.models as modelsTool
 from django.core import serializers as serializersTool
-
 
 # Create your views here.
 

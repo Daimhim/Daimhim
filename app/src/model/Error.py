@@ -1,0 +1,8 @@
+Registered_Success = 'Registered Success'
+Login_Success = 'Login Success'
+Registration_failed_password_empty = 'Registration failed,password can not be empty'
+Registration_failed_UserName_empty = 'Registration failed,nsername can not be empty'
+Registration_failed_Cannot_register_repeatedly = 'Registration failed,Cannot register repeatedly'
+Request_method_error = 'Request method error'
+Username_does_not_exist = 'Username does not exist'
+Username_or_password_is_incorrect = 'Username or password is incorrect'

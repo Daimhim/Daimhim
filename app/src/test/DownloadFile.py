@@ -2,7 +2,7 @@ from urllib import request
 from urllib import parse
 import time
 import json
-import app.models as jm
+import app.src.model.models as jm
 
 
 def downliadFile():
