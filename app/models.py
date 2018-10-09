@@ -8,3 +8,5 @@ class JokeModel(models.Model):
     unixtime = models.IntegerField()
     updatetime = models.DateTimeField()
     url = models.ImageField()
+
+# class ApkFileModerl(models.Model):

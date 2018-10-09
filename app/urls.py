@@ -16,6 +16,7 @@ Including another URLconf
 from django.urls import path
 
 from app.src import views
+from app.src import ApkFileManager as afm
 
 urlpatterns = [
     path('home/index/', views.index),
@@ -24,4 +25,6 @@ urlpatterns = [
     path('home/testForward/', views.testForward),
     path('home/getJokeList/', views.getJokeList),
     path('home/upLoadFiles/', views.upLoadFiles),
+    path('apk/upload/', afm.upload),
+    path('apk/getApkList/', afm.get_apk_list),
 ]
