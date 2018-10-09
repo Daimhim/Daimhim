@@ -57,7 +57,6 @@ def userRegistered(request):
         replace = uuid.uuid1().__str__().replace('-', '')
         create = mUser.objects.create(userId=replace, accountNumber=username, passWord=password)
         create.save()
-        print(type(create))
         mBaseResponse.error_code = 1
         mBaseResponse.error_msg = Error.Registered_Success
         return HttpResponse(jsonTool.objectToJson(mBaseResponse), "application/json")

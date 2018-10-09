@@ -12,6 +12,7 @@ class JokeModel(models.Model):
 
 
 class UserModel(models.Model):
+    userId = models.TextField(null=False, unique=True, primary_key=True)
     accountNumber = models.TextField(unique=True)
     upTime = models.DateTimeField(auto_now=True)
     crateTime = models.DateTimeField(auto_now_add=True)
@@ -19,4 +20,3 @@ class UserModel(models.Model):
     passWord = models.TextField()
     userLogo = models.TextField()
     userPhone = models.TextField()
-    userId = models.TextField(null=True, unique=True)
