@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 import json as jsonTool
+import hashlib
 import os
 
 APK_PATH = '../Daimhim/file/'
@@ -36,4 +37,8 @@ def get_apk_list(request):
         return HttpResponse(jsonTool.dumps(listdir, ensure_ascii=False), "application/json;")
     else:
         return HttpResponse("failure")
+
+
+
+# def seveApkFile(file):
 
