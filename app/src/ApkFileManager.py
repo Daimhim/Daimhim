@@ -39,6 +39,10 @@ def get_apk_list(request):
         return HttpResponse("failure")
 
 
+def save_apk_file(file,userId):
+    pass
 
-# def seveApkFile(file):
+
+def get_apk(userId):
+    pass
 

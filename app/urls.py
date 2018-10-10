@@ -26,8 +26,8 @@ urlpatterns = [
     path('home/testForward/', views.testForward),
     path('home/getJokeList/', views.getJokeList),
     path('home/upLoadFiles/', views.upLoadFiles),
-    path('user/userLogin', User.userLogin),
-    path('user/userRegistered', User.userRegistered),
+    path('user/userLogin', User.user_login),
+    path('user/userRegistered', User.user_registered),
     path('apk/upload/', ApkFileManager.upload),
     path('apk/getApkList/', ApkFileManager.get_apk_list),
 ]

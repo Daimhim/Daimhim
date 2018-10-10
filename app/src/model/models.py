@@ -20,3 +20,12 @@ class UserModel(models.Model):
     passWord = models.TextField()
     userLogo = models.TextField()
     userPhone = models.TextField()
+
+
+class ApkFileModel(models.Model):
+    userId = models.ForeignKey('UserModel', on_delete=models.CASCADE)
+    upTime = models.DateTimeField(auto_now=True)
+    crateTime = models.DateTimeField(auto_now_add=True)
+    apk_name = models.TextField()
+    apk_url = models.TextField()
+    app_version = models.IntegerField()
