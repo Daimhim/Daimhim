@@ -1,28 +1,47 @@
-from django.http import HttpResponse
 import json as jsonTool
-import hashlib
 import os
+import re
 
-APK_PATH = '../Daimhim/file/'
-APK = '/apk/'
+from django.http import HttpResponse
+
+import app.src.model.Error as Error
+import app.src.model.ModelTools as jsonTool
+from app.src.model.BaseResponse import BaseResponse as afmResponse
+from app.src.model.models import ApkFileModel as apkFile
+from django.core.files.uploadedfile import TemporaryUploadedFile
+from app.data import Passer as passer
+APK_PATH = ''
+APK = ''
+AAPT_PATH = ''
+
+
+def __init__(self):
+    self.APK_PATH = '../Daimhim/file/'
+    self.APK = '/apk/'
+    self.AAPT_PATH = os.path.abspath(os.path.join(os.getcwd(), "..", 'data', 'aapt.exe'))
 
 
 def upload(request):
+    afmResponse.error_code = 0
     if request.method == 'POST':
         user_id = request.POST.get('userId')
         if user_id is None or user_id == '':
-            return HttpResponse("failure")
-        path = APK_PATH + user_id + APK
-        if not os.path.exists(path):
-            os.makedirs(path)  # 创建存储文件的文件夹
-        file = request.FILES['file']
-        destination = open(os.path.join(path, file.name), 'wb+')
-        for chunk in file.chunks():
-            destination.write(chunk)
-        destination.close()
-        return HttpResponse("success")
+            afmResponse.error_msg = 'UserId can not empty'
+            return HttpResponse(jsonTool.object_to_json(afmResponse), "application/json")
+        file_ = request.FILES['file']
+        if None is file_:
+            afmResponse.error_msg = 'Please upload a file in apk format'
+            return HttpResponse(jsonTool.object_to_json(afmResponse), "application/json")
+
+        # print(os.path.abspath(file_))
+        # getAppBaseInfo(os.path.abspath(os.path.dirname(os.path.dirname(file_))))
+        # filePath = save_apk_file(file_, app_name='', user_id=user_id)
+        # apkFile.objects.create(userId=user_id, apk_name='', apk_url=filePath, app_version='')
+        # apkFile.save()
+        return HttpResponse(jsonTool.object_to_json(afmResponse), "application/json")
     else:
-        return HttpResponse("failure")
+        afmResponse.error_msg = Error.Request_method_error
+        return HttpResponse(jsonTool.object_to_json(afmResponse), "application/json")
 
 
 def get_apk_list(request):
@@ -39,10 +58,42 @@ def get_apk_list(request):
         return HttpResponse("failure")
 
 
-def save_apk_file(file,userId):
+def get_last_apk(request):
+    # 获取最新的apk
     pass
 
 
-def get_apk(userId):
+def save_apk_file(file, app_name, user_id):
+    # 保存文件
+    path = APK_PATH + jsonTool.str_to_md5(user_id) + '/' + jsonTool.str_to_md5(app_name) + APK
+    if not os.path.exists(path):
+        os.makedirs(path)  # 创建存储文件的文件夹
+    destination = open(os.path.join(path, file.name), 'wb+')
+    for chunk in file.chunks():
+        destination.write(chunk)
+    destination.close()
+
     pass
 
+
+def get_apk(userId, apkName):
+    # 获取文件
+    pass
+
+
+def getAppBaseInfo(parm_apk_path):
+    # packagename = match.group(1)
+    # versionCode = match.group(2)
+    # versionName = match.group(3)
+    # sdkVersion = match.group(4)
+    # targetSdkVersion = match.group(5)
+    parm_aapt_path = passer.get_aapt()
+    get_info_command = "%s dump badging %s" % (parm_aapt_path, parm_apk_path)  # 使用命令获取版本信息  aapt命令介绍可以相关博客
+    output = os.popen(get_info_command).read()  # 执行命令，并将结果以字符串方式返回
+    match = re.compile(
+        "package: name='(\S+)' versionCode='(\d+)' versionName='(\S+)'\\nsdkVersion:'(\S+)'\\ntargetSdkVersion:'(\S+)'").match(
+        output)  # 通过正则匹配，获取包名，版本号，版本名称
+    if not match:
+        print(output)
+        raise Exception("can't get packageinfo")
+    return match
