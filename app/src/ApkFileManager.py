@@ -93,7 +93,7 @@ def getAppBaseInfo(parm_apk_path):
     # targetSdkVersion = match.group(5)
     parm_aapt_path = passer.get_aapt()
     get_info_command = "%s dump badging %s" % (parm_aapt_path, parm_apk_path)
-    output = os.popen(get_info_command).read().encode(encoding='utf-8')  # 执行命令，并将结果以字符串方式返回
+    output = os.popen(get_info_command).read()  # 执行命令，并将结果以字符串方式返回
     match = re.compile(
         "package: name='(\S+)' versionCode='(\d+)' versionName='(\S+)'\\nsdkVersion:'(\S+)'\\ntargetSdkVersion:'(\S+)'").match(
         output)  # 通过正则匹配，获取包名，版本号，版本名称
