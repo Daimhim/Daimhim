@@ -36,9 +36,7 @@ def upload(request):
             afmResponse.error_msg = 'Please upload a file in apk format'
             return HttpResponse(jsonTool.object_to_json(afmResponse), "application/json")
         getAppBaseInfo(passer.save_cache_file(file_))
-        # print(os.path.abspath(file_))
-        # getAppBaseInfo(os.path.abspath(os.path.dirname(os.path.dirname(file_))))
-        # filePath = save_apk_file(file_, app_name='', user_id=user_id)
+
         # apkFile.objects.create(userId=user_id, apk_name='', apk_url=filePath, app_version='')
         # apkFile.save()
         afmResponse.error_msg = 'upload success'
