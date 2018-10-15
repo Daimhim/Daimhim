@@ -22,8 +22,19 @@ class UserModel(models.Model):
     userPhone = models.TextField()
 
 
+class ApplicationModel(models.Model):
+    userId = models.ForeignKey('UserModel', on_delete=models.CASCADE)
+    app_id = models.TextField(null=False, unique=True, primary_key=True)
+    app_name = models.TextField()
+    app_url = models.TextField()
+    app_logo = models.TextField()
+    package_name = models.TextField()
+
+
 class ApkFileModel(models.Model):
     userId = models.ForeignKey('UserModel', on_delete=models.CASCADE)
+    app_id = models.ForeignKey('ApplicationModel', on_delete=models.CASCADE)
+    apk_id = models.TextField(null=False, unique=True, primary_key=True)
     upTime = models.DateTimeField(auto_now=True)
     crateTime = models.DateTimeField(auto_now_add=True)
     apk_name = models.TextField()
@@ -31,5 +42,5 @@ class ApkFileModel(models.Model):
     package_name = models.TextField()
     version_code = models.IntegerField()
     version_name = models.TextField()
-    sdkVersion = models.IntegerField()
-    targetSdkVersion = models.IntegerField()
+    sdk_version = models.IntegerField()
+    target_sdk_version = models.IntegerField()
