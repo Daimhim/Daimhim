@@ -1,3 +1,3 @@
-import app.data.Passer as p
 
-print(p.get_aapt())
+p = None
+print(p is None)

@@ -27,6 +27,7 @@ def user_login(request):
             return HttpResponse(jsonTool.object_to_json(mBaseResponse), "application/json")
         mBaseResponse.error_code = 1
         mBaseResponse.error_msg = Error.Login_Success
+        mBaseResponse.result = user
         return HttpResponse(jsonTool.object_to_json(mBaseResponse), "application/json")
     else:
         mBaseResponse.error_msg = Error.Request_method_error
