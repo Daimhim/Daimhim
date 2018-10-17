@@ -185,6 +185,7 @@ def check_updates(request):
 
 
 def save_apk_file(file, app_name, user_id):
+    #
     # 保存文件
     apk = os.path.join(jsonTool.str_to_md5(user_id), jsonTool.str_to_md5(app_name), 'apk')
     path = os.path.join(get_project_path(), 'file', apk)
