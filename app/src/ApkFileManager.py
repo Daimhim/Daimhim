@@ -7,8 +7,8 @@ from app.src.model.BaseResponse import BaseResponse
 from app.src.model.models import ApkFileModel
 from app.src.model.models import PluginModel
 from app.src.model.models import ApplicationModel
-
 import uuid
+BaseResponse = BaseResponse()
 
 
 def upload_apk(request):

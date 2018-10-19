@@ -32,6 +32,7 @@ urlpatterns = [
     # User
     path('user/login/', UserManager.user_login),
     path('user/registered/', UserManager.user_registered),
+    path('user/delete/', UserManager.user_delete),
     # ApkFileManager
     path('apk/upload/apk/', ApkFileManager.upload_apk),
     path('apk/update/apk/', ApkFileManager.update_apk),

@@ -6,6 +6,7 @@ import app.src.model.Error as Error
 import app.src.model.ModelTools as jsonTool
 from django.http import HttpResponse
 import uuid
+BaseResponse = BaseResponse()
 
 
 def register_app(request):

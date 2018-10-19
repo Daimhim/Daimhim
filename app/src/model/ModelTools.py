@@ -1,9 +1,11 @@
 import hashlib
-import json as jsonTool
+import json
+from django.core import serializers
+import pickle
 
 
 def object_to_json(objs):
-    return jsonTool.dumps(objs, default=lambda obj: obj.__dict__)
+    return json.dumps(objs, default=lambda obj: obj.__dict__)
 
 
 def str_to_md5(content):

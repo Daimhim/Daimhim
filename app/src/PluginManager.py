@@ -4,6 +4,7 @@ import app.src.model.ModelTools as jsonTool
 from app.src.model.models import ApplicationModel
 from app.src.model.models import PluginModel
 import uuid
+BaseResponse = BaseResponse()
 
 
 def register_plugin(request):
