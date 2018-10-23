@@ -6,6 +6,7 @@ import app.src.model.Error as Error
 import app.src.model.ModelTools as jsonTool
 from django.http import HttpResponse
 import uuid
+
 BaseResponse = BaseResponse()
 
 
@@ -92,9 +93,11 @@ def get_app_list(request):
         if user_id is None or user_id == '':
             BaseResponse.error_msg = 'userId can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-        user_model = mUser.objects.get(userId=user_id)
-        app_model = application.objects.get(userId=user_model)
-        BaseResponse.result = app_model
+        user_model = mUser.objects.get(user_id=user_id)
+        app_model = application.objects.filter(user_id=user_model)
+        BaseResponse.result = {"list": list(app_model)}
+        BaseResponse.error_code = '1'
+        BaseResponse.error_msg = ''
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
 
 

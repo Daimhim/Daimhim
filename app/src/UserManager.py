@@ -7,6 +7,7 @@ from app.src.model.models import UserModel as mUser
 import app.src.model.Error as Error
 import app.src.model.ModelTools as jsonTool
 import uuid
+
 BaseResponse = BaseResponse()
 
 
@@ -21,16 +22,23 @@ def user_login(request):
         if password is None or password == '':
             BaseResponse.error_msg = 'password can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+        from django.contrib.auth.models import Group
         try:
-            user = mUser.objects.get(accountNumber=username)
+            user = mUser.objects.values('user_id', 'account_number', 'user_name', 'user_logo', 'user_phone',
+                                        'pass_word').get(account_number=username)
         except FieldError:
+            print(FieldError)
             BaseResponse.error_msg = Error.Username_does_not_exist
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-        if user is not None and user.passWord != password:
+        except mUser.DoesNotExist:
+            BaseResponse.error_msg = Error.Username_does_not_exist
+            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+        if user is not None and user['pass_word'] != password:
             BaseResponse.error_msg = Error.Username_or_password_is_incorrect
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
         BaseResponse.error_code = 1
         BaseResponse.error_msg = Error.Login_Success
+        del user['pass_word']
         BaseResponse.result = user
         return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
     else:
@@ -88,4 +96,3 @@ def user_delete(request):
         BaseResponse.error_code = 1
         BaseResponse.error_msg = 'delete user success'
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-

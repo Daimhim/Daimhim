@@ -5,7 +5,11 @@ import pickle
 
 
 def object_to_json(objs):
-    return json.dumps(objs, default=lambda obj: obj.__dict__)
+    if objs is None:
+        return ''
+    dumps = json.dumps(objs, default=lambda obj: obj.__dict__)
+    print(dumps)
+    return dumps
 
 
 def str_to_md5(content):
