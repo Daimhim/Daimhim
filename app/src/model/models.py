@@ -31,6 +31,10 @@ class ApplicationModel(models.Model):
     app_url = models.TextField()
     app_logo = models.TextField()
     package_name = models.TextField()
+    version_name = models.TextField()
+    version_code = models.TextField()
+    min_sdk_version = models.TextField()
+    target_sdk_version = models.TextField()
 
 
 class PluginModel(models.Model):
@@ -44,8 +48,8 @@ class PluginModel(models.Model):
     last_version_name = models.TextField()
     last_version_code = models.TextField()
     last_version_upTime = models.DateTimeField()
-    last_min_sdk_version = models.IntegerField()
-    last_target_sdk_version = models.IntegerField()
+    models.IntegerField()
+    models.IntegerField()
 
 
 class ApkFileModel(models.Model):

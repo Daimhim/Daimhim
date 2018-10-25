@@ -22,7 +22,6 @@ def user_login(request):
         if password is None or password == '':
             BaseResponse.error_msg = 'password can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-        from django.contrib.auth.models import Group
         try:
             user = mUser.objects.values('user_id', 'account_number', 'user_name', 'user_logo', 'user_phone',
                                         'pass_word').get(account_number=username)
