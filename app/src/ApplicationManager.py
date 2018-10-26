@@ -17,6 +17,10 @@ def register_app(request):
         app_url = request.POST.get("appUrl")
         app_logo = request.POST.get("appLogo")
         package_name = request.POST.get("packageName")
+        version_name = request.POST.get("versionName")
+        version_code = request.POST.get("versionCode")
+        min_sdk_version = request.POST.get("minSdkVersion")
+        target_sdk_version = request.POST.get("targetSdkVersion")
         if user_id is None or user_id == '':
             BaseResponse.error_msg = 'userId can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
@@ -35,7 +39,9 @@ def register_app(request):
         user_model = mUser.objects.get(userId=user_id)
         appid = uuid.uuid1().__str__().replace('-', '')
         application.objects.create(userId=user_model, app_id=appid, app_name=app_name, app_url=app_url,
-                                   app_logo=app_logo, package_name=package_name).save()
+                                   app_logo=app_logo, package_name=package_name, version_name=version_name,
+                                   version_code=version_code, min_sdk_version=min_sdk_version,
+                                   target_sdk_version=target_sdk_version).save()
         BaseResponse.error_code = 1
         BaseResponse.error_msg = 'register app success'
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
