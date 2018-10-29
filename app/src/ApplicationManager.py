@@ -36,9 +36,9 @@ def register_app(request):
         if package_name is None or package_name == '':
             BaseResponse.error_msg = 'packageName can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-        user_model = mUser.objects.get(userId=user_id)
-        appid = uuid.uuid1().__str__().replace('-', '')
-        application.objects.create(userId=user_model, app_id=appid, app_name=app_name, app_url=app_url,
+        user_model = mUser.objects.get(user_id=user_id)
+        app_id = uuid.uuid1().__str__().replace('-', '')
+        application.objects.create(user_id=user_model, app_id=app_id, app_name=app_name, app_url=app_url,
                                    app_logo=app_logo, package_name=package_name, version_name=version_name,
                                    version_code=version_code, min_sdk_version=min_sdk_version,
                                    target_sdk_version=target_sdk_version).save()
@@ -71,6 +71,10 @@ def update_app(request):
         app_url = request.PUT.get("appUrl")
         app_logo = request.PUT.get("appLogo")
         package_name = request.PUT.get("packageName")
+        version_name = request.POST.get("versionName")
+        version_code = request.POST.get("versionCode")
+        min_sdk_version = request.POST.get("minSdkVersion")
+        target_sdk_version = request.POST.get("targetSdkVersion")
         if user_id is None or user_id == '':
             BaseResponse.error_msg = 'userId can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
@@ -87,6 +91,14 @@ def update_app(request):
             app_model.objects.update(app_logo=app_logo)
         if package_name is not None and package_name != '':
             app_model.objects.update(package_name=package_name)
+        if version_name is not None and version_name != '':
+            app_model.objects.update(version_name=version_name)
+        if version_code is not None and version_code != '':
+            app_model.objects.update(version_code=version_code)
+        if min_sdk_version is not None and min_sdk_version != '':
+            app_model.objects.update(min_sdk_version=min_sdk_version)
+        if target_sdk_version is not None and target_sdk_version != '':
+            app_model.objects.update(target_sdk_version=target_sdk_version)
         app_model.save()
         BaseResponse.error_code = 1
         BaseResponse.error_msg = 'update app success'
