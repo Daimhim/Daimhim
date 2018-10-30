@@ -184,18 +184,18 @@ def check_updates(request):
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
 
 
-def save_apk_file(file, app_name, user_id):
+def save_apk_file(file, file_name, user_id):
     #
     # 保存文件
-    apk = os.path.join(jsonTool.str_to_md5(user_id), jsonTool.str_to_md5(app_name), 'apk')
+    apk = os.path.join(jsonTool.str_to_md5(user_id), jsonTool.str_to_md5(file_name), 'apk')
     path = os.path.join(get_project_path(), 'file', apk)
     if not os.path.exists(path):
         os.makedirs(path)  # 创建存储文件的文件夹
-    destination = open(os.path.join(path, app_name), 'wb+')
+    destination = open(os.path.join(path, file_name), 'wb+')
     for chunk in file.chunks():
         destination.write(chunk)
     destination.close()
-    return os.path.join(apk, app_name)
+    return os.path.join(apk, file_name)
 
 
 def get_project_path():

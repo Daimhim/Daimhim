@@ -54,13 +54,13 @@ def user_registered(request):
         if username.strip() == '':
             BaseResponse.error_msg = Error.Registration_failed_UserName_empty
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-        accountNumber = ''
+        account_number = ''
         try:
-            accountNumber = mUser.objects.get(accountNumber=username)
+            account_number = mUser.objects.get(accountNumber=username)
         except:
             pass
-        if accountNumber is not None and accountNumber != '' and accountNumber.accountNumber != '' \
-                and accountNumber.accountNumber == username:
+        if account_number is not None and account_number != '' and account_number.accountNumber != '' \
+                and account_number.accountNumber == username:
             BaseResponse.error_msg = Error.Registration_failed_Cannot_register_repeatedly
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
         if password.strip() == '':

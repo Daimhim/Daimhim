@@ -66,3 +66,12 @@ class ApkFileModel(models.Model):
     version_name = models.TextField()
     min_sdk_version = models.IntegerField()
     target_sdk_version = models.IntegerField()
+
+
+class FileModel(models.Model):
+    serial_number = models.TextField(null=False, unique=True, primary_key=True)
+    user_id = models.ForeignKey('UserModel', on_delete=models.CASCADE)
+    upTime = models.DateTimeField(auto_now=True)
+    crateTime = models.DateTimeField(auto_now_add=True)
+    file_path = models.TextField()
+

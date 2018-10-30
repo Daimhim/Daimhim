@@ -20,6 +20,7 @@ from app.src import UserManager
 from app.src import ApkFileManager
 from app.src import ApplicationManager
 from app.src import PluginManager
+from app.src import FileManager
 
 urlpatterns = [
     path('home/index/', views.index),
@@ -52,6 +53,10 @@ urlpatterns = [
     path('apk/delete/app/', ApplicationManager.delete_app),
     path('apk/get/app/list/', ApplicationManager.get_app_list),
     path('apk/get/app/', ApplicationManager.get_app),
+
+    # FileManager
+    path('upLoadFile/', FileManager.up_load_file),
+    path('getFile/', FileManager.get_file),
 
 ]
 

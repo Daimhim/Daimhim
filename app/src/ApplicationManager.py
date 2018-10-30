@@ -112,7 +112,18 @@ def get_app_list(request):
             BaseResponse.error_msg = 'userId can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
         user_model = mUser.objects.get(user_id=user_id)
-        app_model = application.objects.filter(user_id=user_model)
+        app_model = application.objects.values(
+            'user_id',
+            'app_id',
+            'app_name',
+            'app_url',
+            'app_logo',
+            'package_name',
+            'version_name',
+            'version_code',
+            'min_sdk_version',
+            'target_sdk_version',
+        ).filter(user_id=user_model)
         BaseResponse.result = {"list": list(app_model)}
         BaseResponse.error_code = '1'
         BaseResponse.error_msg = ''
