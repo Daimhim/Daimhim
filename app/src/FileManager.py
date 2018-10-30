@@ -9,47 +9,48 @@ from django.core.exceptions import FieldError
 import app.src.model.Error as Error
 import uuid
 
-BaseResponse = BaseResponse()
-
 
 def up_load_file(request):
+    base_response = BaseResponse()
+    print(request.__dict__)
     if request.method == 'POST':
-        user_id = str(request.POST.get("userId"))
-        print(type(user_id))
+        user_id = request.POST.get("userId")
+        print(user_id)
         if user_id is None or user_id == '':
-            BaseResponse.error_msg = 'user id can not be empty'
-            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+            base_response.error_msg = 'user id can not be empty'
+            return HttpResponse(jsonTool.object_to_json(base_response), "application/json")
         try:
             user = UserModel.objects.get(user_id=user_id)
         except FieldError:
-            BaseResponse.error_msg = Error.Username_does_not_exist
-            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+            base_response.error_msg = Error.Username_does_not_exist
+            return HttpResponse(jsonTool.object_to_json(base_response), "application/json")
         except UserModel.DoesNotExist:
-            BaseResponse.error_msg = Error.Username_does_not_exist
-            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+            base_response.error_msg = Error.Username_does_not_exist
+            return HttpResponse(jsonTool.object_to_json(base_response), "application/json")
         if user is None:
-            BaseResponse.error_msg = 'user id can not be empty'
-            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+            base_response.error_msg = 'user id can not be empty'
+            return HttpResponse(jsonTool.object_to_json(base_response), "application/json")
         apk_file = request.FILES['file']
         if apk_file is None:
-            BaseResponse.error_msg = 'file can not be empty'
-            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+            base_response.error_msg = 'file can not be empty'
+            return HttpResponse(jsonTool.object_to_json(base_response), "application/json")
         replace = uuid.uuid1().__str__().replace('-', '')
         file_path = save_apk_file(apk_file, replace + '.png', user_id)
         file_model = FileModel.objects.create(user_id=UserModel.objects.get(user_id=user_id), serial_number=replace,
                                               file_path=file_path)
         file_model.save()
-        BaseResponse.result = {"file_id": file_model.serial_number}
-        BaseResponse.error_code = 1
-        BaseResponse.error_msg = 'upload image success'
-    return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+        base_response.result = {"file_id": file_model.serial_number}
+        base_response.error_code = 1
+        base_response.error_msg = 'upload image success'
+    return HttpResponse(jsonTool.object_to_json(base_response), "application/json")
 
 
 def get_file(request):
+    base_response = BaseResponse()
     if request.method == 'GET':
         user_id = request.GET.get("userId")
         file_id = request.GET.get("fileId")
-        file_model = FileModel.objects.get(user_id=mUser.objects.get(user_id=user_id), serial_number=file_id)
+        file_model = FileModel.objects.get(user_id=UserModel.objects.get(user_id=user_id), serial_number=file_id)
 
         def file_iterator(file_name, chunk_size=512):
             with open(file_name) as f:
@@ -65,7 +66,7 @@ def get_file(request):
         response['Content-Type'] = 'application/octet-stream'
         response['Content-Disposition'] = 'attachment;filename="{0}"'.format(os.path.basename(join_path))
         return response
-    return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+    return HttpResponse(jsonTool.object_to_json(base_response), "application/json")
 
 
 def save_apk_file(file, file_name, user_id):
