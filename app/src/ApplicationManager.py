@@ -106,6 +106,8 @@ def update_app(request):
 
 
 def get_app_list(request):
+    print(request.path)
+    print(request.get_host())
     if request.method == 'GET':
         user_id = request.GET.get("userId")
         if user_id is None or user_id == '':

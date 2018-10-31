@@ -53,14 +53,13 @@ def get_file(request):
         file_model = FileModel.objects.get(user_id=UserModel.objects.get(user_id=user_id), serial_number=file_id)
 
         def file_iterator(file_name, chunk_size=512):
-            with open(file_name) as f:
+            with open(file_name, 'rb') as f:
                 while True:
                     c = f.read(chunk_size)
                     if c:
                         yield c
                     else:
                         break
-
         join_path = os.path.join(get_project_path(), file_model.file_path)
         response = StreamingHttpResponse(file_iterator(join_path))
         response['Content-Type'] = 'application/octet-stream'
@@ -73,7 +72,7 @@ def save_apk_file(file, file_name, user_id):
     #
     # 保存文件
     file_path = os.path.join(jsonTool.str_to_md5(user_id), 'img')
-    path = os.path.join(get_project_path(), 'file', file_path)
+    path = os.path.join(get_project_path(), file_path)
     if not os.path.exists(path):
         os.makedirs(path)  # 创建存储文件的文件夹
     destination = open(os.path.join(path, file_name), 'wb+')
@@ -84,4 +83,4 @@ def save_apk_file(file, file_name, user_id):
 
 
 def get_project_path():
-    return os.path.abspath(os.path.join(os.getcwd(), "."))
+    return os.path.abspath(os.path.join(os.path.join(os.getcwd(), "."), 'file'))
