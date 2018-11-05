@@ -62,8 +62,19 @@ def get_plugin_list(request):
             BaseResponse.error_msg = 'app id can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
         application_model = ApplicationModel.objects.get(app_id=app_id)
-        BaseResponse.result = PluginModel.objects.get(app_id=application_model)
+        plugin_models = PluginModel.objects.values(
+            "plugin_id",
+            "app_id",
+            "plugin_name",
+            "plugin_description",
+            "package_name",
+            "last_version_name",
+            "last_version_code",
+            "last_version_upTime"
+        ).filter(app_id=application_model)
+        BaseResponse.result = {"list": list(plugin_models)}
         BaseResponse.error_code = 1
+        BaseResponse.error_msg = 'request success'
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
 
 
