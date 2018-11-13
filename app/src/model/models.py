@@ -47,7 +47,6 @@ class PluginModel(models.Model):
     package_name = models.TextField()
     last_version_name = models.TextField()
     last_version_code = models.TextField()
-    last_version_upTime = models.DateTimeField()
 
 
 class ApkFileModel(models.Model):

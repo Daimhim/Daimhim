@@ -1,13 +1,14 @@
-from app.src.model.BaseResponse import BaseResponse
+from app.src.model.BaseResponse import BaseResponse as BR
 from django.http import HttpResponse
 import app.src.model.ModelTools as jsonTool
 from app.src.model.models import ApplicationModel
 from app.src.model.models import PluginModel
 import uuid
-BaseResponse = BaseResponse()
+
 
 
 def register_plugin(request):
+    BaseResponse = BR()
     # appId
     # pluginName
     # packageName
@@ -16,6 +17,8 @@ def register_plugin(request):
         plugin_name = request.POST.get("pluginName")
         package_name = request.POST.get("packageName")
         plugin_description = request.POST.get("pluginDescription")
+        last_version_name = request.POST.get("versionName")
+        last_version_code = request.POST.get("versionCode")
         if app_id is None or app_id == '':
             BaseResponse.error_msg = 'app id can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
@@ -28,7 +31,8 @@ def register_plugin(request):
         plugin_id = uuid.uuid1().__str__().replace('-', '')
         application_model = ApplicationModel.objects.get(app_id=app_id)
         PluginModel.objects.create(plugin_id=plugin_id, app_id=application_model, plugin_name=plugin_name,
-                                   package_name=package_name, plugin_description=plugin_description).save()
+                                   package_name=package_name, plugin_description=plugin_description,
+                                   last_version_name=last_version_name, last_version_code=last_version_code).save()
         BaseResponse.error_code = 1
         BaseResponse.error_msg = 'register plugin success'
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
@@ -39,6 +43,7 @@ def update_plugin(request):
 
 
 def delete_plugin(request):
+    BaseResponse = BR()
     if request.method == 'DELETE':
         app_id = request.DELETE.get("appId")
         plugin_id = request.DELETE.get("pluginId")
@@ -56,6 +61,7 @@ def delete_plugin(request):
 
 
 def get_plugin_list(request):
+    BaseResponse = BR()
     if request.method == 'GET':
         app_id = request.GET.get("appId")
         if app_id is None or app_id == '':
@@ -69,8 +75,7 @@ def get_plugin_list(request):
             "plugin_description",
             "package_name",
             "last_version_name",
-            "last_version_code",
-            "last_version_upTime"
+            "last_version_code"
         ).filter(app_id=application_model)
         BaseResponse.result = {"list": list(plugin_models)}
         BaseResponse.error_code = 1
@@ -79,6 +84,7 @@ def get_plugin_list(request):
 
 
 def get_plugin(request):
+    BaseResponse = BR()
     if request.method == 'GET':
         app_id = request.GET.get("appId")
         plugin_id = request.GET.get("pluginId")
