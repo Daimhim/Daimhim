@@ -3,16 +3,16 @@ import os
 from django.http import HttpResponse, StreamingHttpResponse
 
 import app.src.model.ModelTools as jsonTool
-from app.src.model.BaseResponse import BaseResponse
+from app.src.model.BaseResponse import BaseResponse as BR
 from app.src.model.models import ApkFileModel
 from app.src.model.models import PluginModel
 from app.src.model.models import ApplicationModel
 import uuid
-BaseResponse = BaseResponse()
 
 
 def upload_apk(request):
-    if request.method is 'POST':
+    BaseResponse = BR()
+    if request.method == 'POST':
         user_id = request.POST.get("userId")
         plugin_id = request.POST.get("pluginId")
         apk_name = request.POST.get("apkName")
@@ -72,7 +72,8 @@ def upload_apk(request):
 
 
 def update_apk(request):
-    if request.method is 'PUT':
+    BaseResponse = BR()
+    if request.method == 'PUT':
         user_id = request.PUT.get("userId")
         plugin_id = request.PUT.get("pluginId")
         apk_id = request.PUT.get("apkId")
@@ -110,6 +111,7 @@ def update_apk(request):
 
 
 def delete_apk(request):
+    BaseResponse = BR()
     if request.method == 'DELETE':
         plugin_id = request.DELETE.get("pluginId")
         apk_id = request.DELETE.get("apkId")
@@ -126,22 +128,29 @@ def delete_apk(request):
 
 
 def get_apk_list(request):
-    if request.method is 'GET':
-        user_id = request.POST.get("userId")
-        plugin_id = request.POST.get("pluginId")
+    BaseResponse = BR()
+    if request.method == 'GET':
+        user_id = request.GET.get("userId")
+        plugin_id = request.GET.get("pluginId")
+        if user_id is None or user_id == '':
+            BaseResponse.error_msg = 'user id can not be empty'
+            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
         if plugin_id is None or plugin_id == '':
             BaseResponse.error_msg = 'plugin id can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+        apk_file_model = ApkFileModel.objects.all().filter(plugin_id=PluginModel.objects.get(plugin_id=plugin_id))
         BaseResponse.error_code = 1
-        BaseResponse.result = ApkFileModel.objects.get(plugin_id=PluginModel.objects.get(plugin_id=plugin_id))
+        BaseResponse.result = {"list": list(apk_file_model)}
+        BaseResponse.error_msg = 'request success'
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
 
 
 def get_apk(request):
-    if request.method is 'GET':
-        user_id = request.POST.get("userId")
-        plugin_id = request.POST.get("pluginId")
-        apk_id = request.POST.get("apkId")
+    BaseResponse = BR()
+    if request.method == 'GET':
+        user_id = request.GET.get("userId")
+        plugin_id = request.GET.get("pluginId")
+        apk_id = request.GET.get("apkId")
         if plugin_id is None or plugin_id == '':
             BaseResponse.error_msg = 'plugin id can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
@@ -155,7 +164,8 @@ def get_apk(request):
 
 
 def download_apk(request):
-    if request.method is 'GET':
+    BaseResponse = BR()
+    if request.method == 'GET':
         apk_path = request.POST.get("apkPath")
         if apk_path is None or apk_path == '':
             BaseResponse.error_msg = 'apk path can not be empty'
@@ -179,7 +189,8 @@ def download_apk(request):
 
 
 def check_updates(request):
-    if request.method is 'GET':
+    BaseResponse = BR()
+    if request.method == 'GET':
         pass
     return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
 
