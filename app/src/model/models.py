@@ -63,6 +63,7 @@ class ApkFileModel(models.Model):
     version_name = models.TextField()
     min_sdk_version = models.IntegerField()
     target_sdk_version = models.IntegerField()
+    file_path = models.TextField()
 
 
 class FileModel(models.Model):

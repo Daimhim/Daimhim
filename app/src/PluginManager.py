@@ -6,7 +6,6 @@ from app.src.model.models import PluginModel
 import uuid
 
 
-
 def register_plugin(request):
     BaseResponse = BR()
     # appId

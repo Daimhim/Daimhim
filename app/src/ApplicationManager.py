@@ -1,5 +1,5 @@
 from django.http import HttpRequest
-from app.src.model.BaseResponse import BaseResponse
+from app.src.model.BaseResponse import BaseResponse as BR
 from app.src.model.models import UserModel as mUser
 from app.src.model.models import ApplicationModel as application
 import app.src.model.Error as Error
@@ -7,10 +7,9 @@ import app.src.model.ModelTools as jsonTool
 from django.http import HttpResponse
 import uuid
 
-BaseResponse = BaseResponse()
-
 
 def register_app(request):
+    BaseResponse = BR()
     if request.method == 'POST':
         user_id = request.POST.get("userId")
         app_name = request.POST.get("appName")
@@ -36,7 +35,11 @@ def register_app(request):
         if package_name is None or package_name == '':
             BaseResponse.error_msg = 'packageName can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-        user_model = mUser.objects.get(user_id=user_id)
+        try:
+            user_model = mUser.objects.get(user_id=user_id)
+        except mUser.DoesNotExist:
+            BaseResponse.error_msg = 'packageName can not be empty'
+            return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
         app_id = uuid.uuid1().__str__().replace('-', '')
         application.objects.create(user_id=user_model, app_id=app_id, app_name=app_name, app_url=app_url,
                                    app_logo=app_logo, package_name=package_name, version_name=version_name,
@@ -48,6 +51,7 @@ def register_app(request):
 
 
 def delete_app(request):
+    BaseResponse = BR()
     if request.method == 'DELETE':
         user_id = request.DELETE.get("userId")
         app_id = request.DELETE.get("appId")
@@ -64,6 +68,7 @@ def delete_app(request):
 
 
 def update_app(request):
+    BaseResponse = BR()
     if request.method == 'PUT':
         user_id = request.PUT.get("userId")
         app_id = request.PUT.get("appId")
@@ -106,6 +111,7 @@ def update_app(request):
 
 
 def get_app_list(request):
+    BaseResponse = BR()
     print(request.path)
     print(request.get_host())
     if request.method == 'GET':
@@ -133,6 +139,7 @@ def get_app_list(request):
 
 
 def get_app(request):
+    BaseResponse = BR()
     if request.method == 'GET':
         user_id = request.GET.get("userId")
         app_id = request.GET.get("appId")
