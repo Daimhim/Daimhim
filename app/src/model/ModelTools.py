@@ -5,8 +5,8 @@ import pickle
 
 
 def object_to_json(objs):
-    if objs is None:
-        return ''
+    if objs is None or objs == '':
+        raise RuntimeError("objs can not be empty")
     dumps = json.dumps(objs, default=lambda obj: obj.__dict__)
     print(dumps)
     return dumps

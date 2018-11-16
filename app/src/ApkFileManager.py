@@ -47,8 +47,10 @@ def upload_apk(request):
         if apk_description is None or apk_description == '':
             BaseResponse.error_msg = 'apk description can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
+        if min_sdk_version is None or min_sdk_version == '':
+            min_sdk_version = '-1'
         plugin_model = PluginModel.objects.get(plugin_id=plugin_id)
-        apk_file = request.POST.get('apkPath')
+        apk_file = request.FILES['apkPath']
         if apk_file is None:
             BaseResponse.error_msg = 'apk file can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
@@ -130,7 +132,20 @@ def get_apk_list(request):
         if plugin_id is None or plugin_id == '':
             BaseResponse.error_msg = 'plugin id can not be empty'
             return HttpResponse(jsonTool.object_to_json(BaseResponse), "application/json")
-        apk_file_model = ApkFileModel.objects.all().filter(plugin_id=PluginModel.objects.get(plugin_id=plugin_id))
+        apk_file_model = ApkFileModel.objects.values(
+            "plugin_id",
+            "apk_id",
+            "apk_name",
+            "apk_description",
+            "apk_url",
+            "apk_path",
+            "package_name",
+            "version_code",
+            "version_name",
+            "min_sdk_version",
+            "target_sdk_version",
+            "file_path"
+        ).filter(plugin_id=PluginModel.objects.get(plugin_id=plugin_id))
         BaseResponse.error_code = 1
         BaseResponse.result = {"list": list(apk_file_model)}
         BaseResponse.error_msg = 'request success'
