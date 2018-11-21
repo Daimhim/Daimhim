@@ -59,10 +59,10 @@ class ApkFileModel(models.Model):
     apk_url = models.TextField()
     apk_path = models.TextField()
     package_name = models.TextField()
-    version_code = models.IntegerField(unique=True)
+    version_code = models.IntegerField(unique=True,default=0)
     version_name = models.TextField()
-    min_sdk_version = models.IntegerField()
-    target_sdk_version = models.IntegerField()
+    min_sdk_version = models.IntegerField(default=0)
+    target_sdk_version = models.IntegerField(default=0)
     file_path = models.TextField()
 
 
