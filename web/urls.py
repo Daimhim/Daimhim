@@ -15,8 +15,9 @@ Including another URLconf
 """
 from django.urls import path
 
-from web import views
+from web.src import tests
 
 urlpatterns = [
-    path('home/', views.index),
+    path(r"logo.ico", tests.logo),
+    path('', tests.index)
 ]
